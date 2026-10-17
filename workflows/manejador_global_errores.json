@@ -1,0 +1,248 @@
+{
+  "name": "Entrega Final – Manejador global de errores",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "f5e3be10-d262-4562-8d98-07528b84111d",
+      "name": "Falla no controlada en el flujo principal",
+      "type": "n8n-nodes-base.errorTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "g-flujo",
+              "name": "flujo",
+              "value": "={{ $json.workflow?.name ?? \"Flujo desconocido\" }}",
+              "type": "string"
+            },
+            {
+              "id": "g-nodo",
+              "name": "nodoFallido",
+              "value": "={{ $json.execution?.lastNodeExecuted ?? \"Desconocido\" }}",
+              "type": "string"
+            },
+            {
+              "id": "g-msg",
+              "name": "mensajeError",
+              "value": "={{ $json.execution?.error?.message ?? \"Sin detalle\" }}",
+              "type": "string"
+            },
+            {
+              "id": "g-ejec",
+              "name": "ejecucionId",
+              "value": "={{ $json.execution?.id ?? \"\" }}",
+              "type": "string"
+            },
+            {
+              "id": "g-url",
+              "name": "ejecucionUrl",
+              "value": "={{ $json.execution?.url ?? \"\" }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "ecabceb7-4057-4c63-b7d6-002fb6f28b46",
+      "name": "Preparar datos del fallo",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        224,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "authentication": "airtableOAuth2Api",
+        "operation": "create",
+        "base": {
+          "__rl": true,
+          "mode": "id",
+          "value": "appWFhwc5ePm9gC1Q",
+          "cachedResultName": "Clínica Dental – Cotizaciones IA (Entrega Final)"
+        },
+        "table": {
+          "__rl": true,
+          "mode": "id",
+          "value": "tbl95AVqV0IacwHyA",
+          "cachedResultName": "Log de Errores"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Resumen": "={{ \"Falla no controlada en: \" + $json.nodoFallido }}",
+            "Nodo que falló": "={{ $json.nodoFallido }}",
+            "Mensaje de error": "={{ $json.mensajeError }}",
+            "Fecha": "={{ $now.toISO() }}",
+            "ID ejecución n8n": "={{ $json.ejecucionId }}",
+            "Panel KPI": "={{ [\"rec1wpKKtIBUwym0k\"] }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Resumen",
+              "displayName": "Resumen",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Nodo que falló",
+              "displayName": "Nodo que falló",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Mensaje de error",
+              "displayName": "Mensaje de error",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Fecha",
+              "displayName": "Fecha",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "ID ejecución n8n",
+              "displayName": "ID ejecución n8n",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Panel KPI",
+              "displayName": "Panel KPI",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "array",
+              "canBeUsedToMatch": false
+            }
+          ]
+        },
+        "options": {
+          "typecast": true
+        }
+      },
+      "id": "aea1150d-ba30-4070-bf1b-7dd4c0fa11be",
+      "name": "Registrar en Log de Errores (global)",
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.2,
+      "position": [
+        448,
+        0
+      ],
+      "credentials": {
+        "airtableOAuth2Api": {
+          "id": "svfFabl4SnFIxsVi",
+          "name": "Airtable account 2"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "C0C4439QB7B",
+          "cachedResultName": "recepcion"
+        },
+        "text": "=🔥 *Falla no controlada* en «{{ $(\"Preparar datos del fallo\").first().json.flujo }}»\n*Nodo:* {{ $(\"Preparar datos del fallo\").first().json.nodoFallido }}\n*Error:* {{ $(\"Preparar datos del fallo\").first().json.mensajeError }}\n*Ejecución:* {{ $(\"Preparar datos del fallo\").first().json.ejecucionUrl }}\nEl correo del paciente quedó sin leer en Gmail para que recepción lo atienda a mano.",
+        "otherOptions": {
+          "includeLinkToWorkflow": false
+        }
+      },
+      "id": "4d486607-ac1b-4012-8ab5-166cb2e86215",
+      "name": "Alerta crítica en Slack",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.7,
+      "position": [
+        672,
+        0
+      ],
+      "credentials": {
+        "slackOAuth2Api": {
+          "id": "JSrFpmXF42yDQRlX",
+          "name": "Slack account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Falla no controlada en el flujo principal": {
+      "main": [
+        [
+          {
+            "node": "Preparar datos del fallo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Preparar datos del fallo": {
+      "main": [
+        [
+          {
+            "node": "Registrar en Log de Errores (global)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Registrar en Log de Errores (global)": {
+      "main": [
+        [
+          {
+            "node": "Alerta crítica en Slack",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": true
+  },
+  "versionId": "024bbe6b-2eab-4cf1-adec-838d3b8ba505",
+  "meta": {
+    "aiBuilderAssisted": true,
+    "builderVariant": "mcp",
+    "instanceId": "5d632b12be4ae5e212f39dc01103b3de0452ca984626fc8c5e7b83638e935c36"
+  },
+  "nodeGroups": [],
+  "id": "sR9pkv9IWjrx6Ppe",
+  "tags": []
+}
