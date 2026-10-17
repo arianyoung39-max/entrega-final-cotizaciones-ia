@@ -1,0 +1,14 @@
+{
+  "_descripcion": "Campos que el flujo usa del Gmail Trigger (simple = false). Origen: Gmail API. Destino: nodo 'Normalizar datos del correo'. Datos ficticios.",
+  "id": "19a1b2c3d4e5f6a7",
+  "threadId": "19a1b2c3d4e5f6a7",
+  "subject": "Cotización blanqueamiento dental",
+  "from": {
+    "value": [
+      { "address": "laura.prueba@example.com", "name": "Laura Gómez" }
+    ],
+    "text": "Laura Gómez <laura.prueba@example.com>"
+  },
+  "text": "Hola, buenas tardes. Quisiera saber cuánto cuesta un blanqueamiento dental. Gracias.",
+  "date": "2026-10-07T15:00:00.000Z"
+}

@@ -1,0 +1,24 @@
+{
+  "proceso": "Respuesta automática a solicitudes de cotización",
+  "negocio": "Clínica Dental Sonrisa Plena (caso ficticio)",
+  "responsable": "Recepción (aprobación humana)",
+  "orquestador": "n8n Cloud",
+  "base_de_datos": "Airtable",
+  "trigger": { "tipo": "polling", "servicio": "Gmail", "frecuencia": "cada minuto", "filtro": "subject:(cotizacion OR cotización) -from:me, solo no leídos, 1 por ejecución" },
+  "modelos": [
+    { "tarea": "clasificar", "modelo": "claude-haiku-4-5-20251001", "max_tokens": 600 },
+    { "tarea": "redactar", "modelo": "claude-sonnet-5-5", "max_tokens": 3000 }
+  ],
+  "pasos": [
+    { "orden": 1, "nombre": "Nuevo correo de cotización", "tipo": "trigger", "herramienta": "Gmail" },
+    { "orden": 2, "nombre": "¿Remitente válido? (anti-bucle)", "tipo": "decision", "herramienta": "n8n IF" },
+    { "orden": 3, "nombre": "Registrar paciente y solicitud (Pendiente)", "tipo": "accion", "herramienta": "Airtable" },
+    { "orden": 4, "nombre": "¿El correo trae texto suficiente?", "tipo": "decision", "herramienta": "n8n IF" },
+    { "orden": 5, "nombre": "Clasificar solicitud", "tipo": "accion", "herramienta": "Claude Haiku" },
+    { "orden": 6, "nombre": "¿JSON de la IA válido?", "tipo": "decision", "herramienta": "n8n IF" },
+    { "orden": 7, "nombre": "Enrutar según clasificación", "tipo": "decision", "herramienta": "n8n Switch" },
+    { "orden": 8, "nombre": "Redactar respuesta", "tipo": "accion", "herramienta": "Claude Sonnet" },
+    { "orden": 9, "nombre": "Aprobación humana (HITL)", "tipo": "decision", "herramienta": "Slack Send and Wait" },
+    { "orden": 10, "nombre": "Responder en el mismo hilo", "tipo": "accion", "herramienta": "Gmail Reply" }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "_descripcion": "Salida del nodo 'Normalizar datos del correo'. Es el contrato interno que leen los demás nodos. El texto se recorta a 2.000 caracteres (minimización y control de tokens).",
+  "messageId": "19a1b2c3d4e5f6a7",
+  "threadId": "19a1b2c3d4e5f6a7",
+  "email": "laura.prueba@example.com",
+  "nombre": "Laura Gómez",
+  "primerNombre": "Laura",
+  "asunto": "Cotización blanqueamiento dental",
+  "mensaje": "Hola, buenas tardes. Quisiera saber cuánto cuesta un blanqueamiento dental. Gracias.",
+  "fechaRecepcion": "2026-10-07T15:00:00.000Z"
+}

@@ -1,0 +1,20 @@
+{
+  "_descripcion": "Formato EXACTO que se le exige a Claude Haiku (prompt estructurado). Luego el nodo 'Interpretar respuesta de la IA' lo parsea y lo enriquece con el ID y el precio de Airtable. Si no es JSON válido o la clasificación no está entre las 3 permitidas, el flujo va a la ruta de error.",
+  "respuesta_modelo": {
+    "clasificacion": "En lista",
+    "procedimiento_detectado": "blanqueamiento dental",
+    "procedimiento_lista": "Blanqueamiento dental",
+    "razonamiento": "El paciente solicita explícitamente blanqueamiento dental, que coincide con un procedimiento activo de la lista."
+  },
+  "valores_permitidos_clasificacion": ["En lista", "No en lista", "Datos incompletos"],
+  "salida_enriquecida_por_n8n": {
+    "clasificacion": "En lista",
+    "procedimientoDetectado": "blanqueamiento dental",
+    "procedimientoLista": "Blanqueamiento dental",
+    "razonamiento": "El paciente solicita explícitamente blanqueamiento dental, que coincide con un procedimiento activo de la lista.",
+    "procedimientoId": "recI2LVDZxHak5osr",
+    "precioDesde": 650000,
+    "notaPaciente": "Requiere valoración previa para confirmar que es apto.",
+    "tokensHaiku": 939
+  }
+}

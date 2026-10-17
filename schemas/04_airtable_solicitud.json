@@ -1,0 +1,41 @@
+{
+  "_descripcion": "Registro de la tabla Solicitudes a lo largo de su ciclo de vida. Cada fase la escribe un nodo distinto (update por id). Los vínculos son arrays de IDs de registro de Airtable.",
+  "fase_1_registrar_pendiente": {
+    "Estado": "Pendiente",
+    "Fecha recepción": "2026-10-07T15:00:00.000Z",
+    "Asunto": "Cotización blanqueamiento dental",
+    "Mensaje original": "Hola, buenas tardes. Quisiera saber cuánto cuesta un blanqueamiento dental. Gracias.",
+    "Gmail Message ID": "19a1b2c3d4e5f6a7",
+    "Gmail Thread ID": "19a1b2c3d4e5f6a7",
+    "Paciente": ["recPaciente000001"],
+    "Panel KPI": ["rec1wpKKtIBUwym0k"]
+  },
+  "fase_2_procesado_por_ia": {
+    "id": "recSolicitud00002",
+    "Estado": "Procesado por IA",
+    "Procedimiento detectado": "blanqueamiento dental",
+    "Clasificación IA": "En lista",
+    "Razonamiento IA": "El paciente solicita explícitamente blanqueamiento dental...",
+    "Modelos IA usados": "claude-haiku-4-5-20251001",
+    "Tokens consumidos": 939
+  },
+  "fase_3_en_revision_humana": {
+    "id": "recSolicitud00002",
+    "Estado": "En revisión humana",
+    "Borrador respuesta": "Hola, Laura, buenas tardes: ...",
+    "Procedimiento": ["recI2LVDZxHak5osr"],
+    "Modelos IA usados": "claude-haiku-4-5-20251001 + claude-sonnet-5-5",
+    "Tokens consumidos": 2250
+  },
+  "fase_4_decision_humana": {
+    "id": "recSolicitud00002",
+    "Decisión humana": "Aprobado",
+    "Estado": "Aprobado por Humano",
+    "Comentario recepción": "Aprobado en Slack"
+  },
+  "fase_5_enviado": {
+    "id": "recSolicitud00002",
+    "Estado": "Enviado",
+    "Fecha respuesta": "2026-10-07T15:08:15.000Z"
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "_descripcion": "Salida del nodo Slack 'Send and Wait' (HITL). El flujo queda en estado 'waiting' hasta que alguien pulsa un botón o pasan 24 h. approved ausente = sin respuesta (se trata como rechazo).",
+  "aprobado": { "data": { "approved": true, "respondedAt": "2026-10-07T15:08:12.000Z" } },
+  "rechazado": { "data": { "approved": false, "respondedAt": "2026-10-07T15:26:40.000Z" } },
+  "sin_respuesta_24h": { "data": {} }
+}
